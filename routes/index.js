@@ -1,14 +1,19 @@
-var api = require("../config")
-  , AsposeCloud = require("asposecloud")
-  , aspose = new AsposeCloud({
-  appSID: api.sid,
-  appKey: api.key,
-  baseURI: "http://api.aspose.com/v1.1/"
-});
-
+var dv = require('dv')
+  , fs = require('fs');
 
 exports.index = function(req, res){
+  var localFile = "/../img/test.jpg";
+  var image = new dv.Image('png', fs.readFileSync(__dirname + localFile);
+  var tesseract = new dv.Tesseract('eng', image);
 
-  res.send(200);
-  res.end();
+  // Get text
+  nodecr.process(__dirname + localFile,function(err, text) {
+    if(err) {
+      console.error(err);
+    } else {
+      console.log("Got here", text);
+      res.send(200);
+    }
+  });
+
 };

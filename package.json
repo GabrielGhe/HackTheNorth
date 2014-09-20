@@ -8,6 +8,9 @@
   "dependencies": {
     "express": "3.4.8",
     "ejs": "*",
-    "asposecloud": "~1.0.3"
+    "node-inspector": "~0.7.4",
+    "nodemon": "~1.2.1",
+    "nodecr": "0.0.5",
+    "dv": "~1.8.0"
   }
 }
