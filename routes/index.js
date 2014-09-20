@@ -4,13 +4,20 @@ var dv = require('dv')
 
 exports.index = function(req, res){
 
-  var loadedFile = req.files.file.path
-  fs.readFile(loadedFile, function(err, file){
-    console.log(file);
-    var image = new dv.Image('png', file).scale(7.0)
-      , tesseract = new dv.Tesseract('eng', image)
-      , text = tesseract.findText('plain');
-    fs.unlink
-    res.send(text);
-  });
+  var loadedFile = req.files.file.path;
+  text = "";
+  Q.nfcall(fs.readFile, loadedFile)
+    .then(function(file){
+      var image = new dv.Image('png', file).scale(7.0)
+      , tesseract = new dv.Tesseract('eng', image);
+      
+      text = tesseract.findText('plain');
+      return Q.nfcall(fs.unlink, loadedFile);
+    })
+    .then(function() {
+      res.send(text);
+    })
+    .fail(function() {
+      res.send(400);
+    });
 };
