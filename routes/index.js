@@ -1,19 +1,16 @@
 var dv = require('dv')
-  , fs = require('fs');
+  , fs = require('fs')
+  , Q = require('q');
 
 exports.index = function(req, res){
-  var localFile = "/../img/test.jpg";
-  var image = new dv.Image('png', fs.readFileSync(__dirname + localFile);
-  var tesseract = new dv.Tesseract('eng', image);
 
-  // Get text
-  nodecr.process(__dirname + localFile,function(err, text) {
-    if(err) {
-      console.error(err);
-    } else {
-      console.log("Got here", text);
-      res.send(200);
-    }
+  var loadedFile = req.files.file.path
+  fs.readFile(loadedFile, function(err, file){
+    console.log(file);
+    var image = new dv.Image('png', file).scale(7.0)
+      , tesseract = new dv.Tesseract('eng', image)
+      , text = tesseract.findText('plain');
+    fs.unlink
+    res.send(text);
   });
-
 };
