@@ -11,14 +11,15 @@ exports.index = function(req, res){
   Q.longStackSupport = true;
   Q.nfcall(fs.readFile, loadedFilePath)
     .then(function(file){
-      var image = new dv.Image('png', file).scale(7.0)
-      , tesseract = new dv.Tesseract('eng', image);
-      
+      var timout = setTimeout(Q.defer().reject, 30000)
+        , image = new dv.Image('png', file).scale(7.0)
+        , tesseract = new dv.Tesseract('eng', image);
+
       text = tesseract.findText('plain');
+      clearTimeout(timeout);
       return Q.nfcall(fs.unlink, loadedFilePath);
     })
     .then(function() {
-      console.log(text);
       res.send(text);
     })
     .fail(function() {
