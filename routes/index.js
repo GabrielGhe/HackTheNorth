@@ -5,10 +5,12 @@ var dv = require('dv')
 exports.index = function(req, res){
 
   var loadedFile = req.files.file.path;
-  text = "";
+  var text = "";
+  
+  Q.longStackSupport = true;
   Q.nfcall(fs.readFile, loadedFile)
     .then(function(file){
-      var image = new dv.Image('png', file).scale(7.0)
+      var image = new dv.Image('png', req).scale(7.0)
       , tesseract = new dv.Tesseract('eng', image);
       
       text = tesseract.findText('plain');
